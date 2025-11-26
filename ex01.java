@@ -1,27 +1,64 @@
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Scanner;
 
-public class Ex6 {
-    static class Aluno {
-        int matricula; String nome; int idade;
-        Aluno(int m,String n,int i){ matricula=m; nome=n; idade=i; }
-        public String toString(){ return matricula + " " + nome + " " + idade; }
+class SequentialList1 {
+    private int[] data;
+    private int size;
+
+    public SequentialList1(int capacity) {
+        data = new int[capacity];
+        size = 0;
     }
 
-    public static void removeMenorQue(ArrayList<Aluno> lista, int N) {
-        Iterator<Aluno> it = lista.iterator();
-        while (it.hasNext()) {
-            if (it.next().idade < N) it.remove();
-        }
+    public void insertEnd(int value) {
+        data[size++] = value;
     }
 
+    public void insertAtStart(int value) {
+        for (int i = size; i > 0; i--) data[i] = data[i - 1];
+        data[0] = value;
+        size++;
+    }
+
+    public void print() {
+        System.out.print("Lista: ");
+        for (int i = 0; i < size; i++) System.out.print(data[i] + " ");
+        System.out.println();
+    }
+
+    public int indexOf(int value) {
+        for (int i = 0; i < size; i++)
+            if (data[i] == value) return i;
+        return -1;
+    }
+}
+
+public class Ex1 {
     public static void main(String[] args) {
-        ArrayList<Aluno> lista = new ArrayList<>();
-        lista.add(new Aluno(1,"Ana",18));
-        lista.add(new Aluno(2,"Beto",21));
-        lista.add(new Aluno(3,"Caio",17));
-        System.out.println("Antes: " + lista);
-        removeMenorQue(lista, 18);
-        System.out.println("Depois (idade >= 18): " + lista);
+        SequentialList1 lista = new SequentialList1(20);
+        Scanner sc = new Scanner(System.in);
+
+        lista.insertEnd(10);
+        lista.insertEnd(20);
+        lista.insertEnd(30);
+        lista.insertEnd(40);
+        lista.insertEnd(50);
+
+        lista.print();
+
+        lista.insertEnd(14);
+        lista.print();
+
+        System.out.print("Digite um número para inserir no início: ");
+        int n = sc.nextInt();
+        lista.insertAtStart(n);
+        lista.print();
+
+        System.out.print("Digite um número para buscar: ");
+        int x = sc.nextInt();
+        int pos = lista.indexOf(x);
+        if (pos >= 0) System.out.println("Encontrado na posição " + pos);
+        else System.out.println("Não encontrado.");
+
+        System.out.println("Se a lista fosse alfabética, seria necessário inserir em ordem.");
     }
 }
